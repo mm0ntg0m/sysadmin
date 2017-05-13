@@ -27,3 +27,13 @@ curl -v -X POST \
 ```
 
 Check the [JSON schema]((https://github.com/2600hz/kazoo/blob/master/applications/crossbar/priv/couchdb/schemas/system_config.stepswitch.cnam.json)) for the necessary fields to set in the `{...}` portion.
+
+Once you have the numbers assigned to the Account in Monster-UI,
+Update both the System numbers/+1XXX database as well as the Account +1XXXXXXXXXX document by making the following changes in CouchDB:
+
+Change    "pvt_module_name": "knm_local", to    "pvt_module_name": "knm_other"
+Remove "local" from    "features": [ "local" ],
+Add    "cnam": { "inbound_lookup": true },
+Change    "pvt_features": { "local": { } }   to    "pvt_features": { "inbound_cnam": { "inbound_lookup": true } }
+
+Execute "sup stepswitch_maintenance flush"
